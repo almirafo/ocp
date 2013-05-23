@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+
+    
+    <style type="text/css">
+
+        li.ui-selectonemenu-item{
+            font-size:12px;
+            background-color: #ffcc00;
+        }
+        .ui-datatable{
+            background-color: #b2d5d6;
+        }
+    </style>
+    
+    <f:view>
+    <h:head>
+        
+        <title>Users</title>
+    </h:head>
+        <h:body > <!--style="background-image:url('../../resources/imagens/fundo.jpg');background-position: 50% 0%;background-repeat: no-repeat"    -->
+        
+           <p:panel header="Users to Login">
+            <h:form id="tabela">
+                 <p:dataTable emptyMessage="No Data Found." scrollWidth="30" id="users"   paginator="true" value="#{loginBean.listAll}" var="user"   rows="10" style="width:60%; font-family:Arial; font-size: 12px;"> 
+
+
+                <p:column style="width:100px;">
+                    <f:facet  name="header">
+                    <h:outputText value="Company" />
+                    </f:facet>
+                         <h:outputText value="#{user.company.name}"/>
+                </p:column> 
+                   
+                <p:column style="width:200px;">
+                    <f:facet  name="header">
+                    <h:outputText value="Name" />
+                    </f:facet>
+                         <h:outputText value="#{user.username}"/>
+                </p:column> 
+
+                <p:column style="width:200px;">
+                    <f:facet  name="header">
+                    <h:outputText value="E-mail" />
+                    </f:facet>
+                         <h:outputText value="#{user.email}"/>
+                </p:column> 
+                
+          
+                     
+                <p:column style="width:70px;">
+                    <f:facet name="header">
+                    <h:outputText value="Edit" />
+                    </f:facet>
+                    <h:commandLink  value="Edit" actionListener="#{loginBean.edit(user)}"/>
+                </p:column> 
+
+                <p:column  style="width:70px;">
+                    <f:facet name="header">
+                    <h:outputText value="Remove" />
+                    </f:facet>
+                    <h:commandLink value="Remove" actionListener="#{loginBean.remove(user)}"  />
+                </p:column> 
+
+                </p:dataTable>
+            </h:form>
+            
+            
+                         <h:form id="FormUser"> 
+                 
+            <p:panel header="Details"  rendered="true" style=" width: 60%; border: 0; font-style: italic; font-family:Arial; font-size: 12px;" >
+                <h:inputHidden  value="#{loginBean.loginId}" validatorMessage="#{loginBean.loginId}"/>
+                 <h:inputHidden id="edita" value="#{loginBean.edita}"/>
+                <h:panelGrid  columns="2" style="border-style:groove;border-style-inner:none ;width: 800px">
+                
+                    Name        :  <p:inputText     value="#{loginBean.userName}"    />
+                    E-mail      :  <p:inputText     value="#{loginBean.email}" />
+                    Descripton  :  <p:inputText     value="#{loginBean.description}" />
+
+                    Level       :  <h:selectOneRadio id="checkbox" value="#{loginBean.userLevel}" >
+					                <f:selectItem itemValue="U" itemLabel="User" />
+					                <f:selectItem itemValue="A" itemLabel="Admin" />
+					               </h:selectOneRadio>                  
+                    
+                    Company     :  <p:selectOneMenu value="#{loginBean.company.companyId}" effect="fade"  style="font-size: smaller;font: smaller ;width: 200px;" >  
+                                    <f:selectItem itemLabel="--Choose--" itemValue=""/>  
+                                    <f:selectItems value="#{companyBean.listAll}" var="company" itemLabel="#{company.name}" itemValue="#{company.companyId}"/>  
+                                   </p:selectOneMenu>  
+                
+                     
+                      
+                <h:commandButton value="Save"  action ="#{loginBean.save}"/>
+                <h:commandButton value="Reset" actionListener ="#{loginBean.reset}"/>
+            </h:panelGrid>   
+                   
+               
+            </p:panel>
+                <p:messages severity="error" closable="true"/>
+        </h:form>
+            
+            
+            </p:panel>
+            
+    </h:body>
+    </f:view>
+</html>
+
