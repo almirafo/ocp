@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import com.supportcomm.ocp.entity.Company;
 import com.supportcomm.ocp.entity.Login;

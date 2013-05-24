@@ -17,6 +17,7 @@
 		<class>com.supportcomm.ocp.entity.PieChartOccupationTotalVO</class>
 		<class>com.supportcomm.ocp.entity.PieChartOccupationPortalVO</class>
 		<class>com.supportcomm.ocp.entity.PieChartOccupationSiteVO</class>
+		<class>com.supportcomm.ocp.entity.PortalLoginVO</class>
 		
 		
 		<properties>

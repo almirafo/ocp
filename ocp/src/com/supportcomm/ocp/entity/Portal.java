@@ -15,6 +15,8 @@ import java.util.List;
 	@NamedQuery(name="portalListAll" ,query="select l from Portal l"),
 	@NamedQuery(name="findByPortalNumber" ,query="Select l from Portal l where l.portalNumber= :portalNumber")
 })
+
+
 public class Portal implements Serializable {
 	private static final long serialVersionUID = 1L;
 

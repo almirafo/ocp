@@ -3,6 +3,7 @@ package com.supportcom.ocp.managedbean;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -22,10 +23,18 @@ import com.supportcomm.ocp.util.Telas;
 
 @ManagedBean(name="loginBean")
 @ViewScoped
-public class LoginManagedBean {
+public class LoginManagedBean implements Serializable{
 
 	  
-	   LoginServiceImpl loginService;
+	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = -935972244841067336L;
+
+
+
+
+	LoginServiceImpl loginService;
 	   
 	   
 
