@@ -12,7 +12,7 @@ public interface PortalService {
 	public Portal findById(Portal portal);
 	public Portal findByPortalNumber(Portal portal);
 	public void update(Portal portal);
-	public void setSelectedAccessRights(List<Portal> selectedAccessRights);
+	public List<Portal> setSelectedAccessRights(List<Portal> selectedAccessRights);
 	public List<PortalLoginVO> listAllByLogin(Long loginId);
 
 }
