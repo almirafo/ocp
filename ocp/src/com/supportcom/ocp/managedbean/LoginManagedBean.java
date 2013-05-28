@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -49,6 +50,10 @@ public class LoginManagedBean implements Serializable{
 	    private String message;
 	    private String userName="";
 	    private String description="";
+	    
+	    private String oldPassword="";
+	    private String newPassword="";
+	    private String rePassword="";
 	   
 	    private Company company= new Company();
 	    private Login login;
@@ -75,7 +80,7 @@ public class LoginManagedBean implements Serializable{
 	    	login = loginService.getUserAccessLoginPass(email, password);
 	    	
              if (login!=null){
-                 
+            	 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logado", login);  
                 this.userName =login.getUsername();
              
@@ -150,6 +155,35 @@ public class LoginManagedBean implements Serializable{
 	    	
 	    }
 	    
+
+	    
+	    
+	    
+	    public String changeLogin(){
+	    	loginService =  new LoginServiceImpl();
+	    	
+
+	    	Login login =loginService.getUserAccessLoginPass(email, oldPassword);
+	    	
+	    	if (login!=null){
+	    		if(this.newPassword.equals(this.rePassword)){
+	    			login.setPassword(this.newPassword);
+	    			loginService.update(login);
+	    		} else{
+	    			message = "New Password and regidig is diferent!";
+	    			FacesContext.getCurrentInstance().addMessage("msgs", new FacesMessage(message));  
+		    		return "changeLogin";
+	    		}
+	    		
+	    	
+	    	}
+	    	else{
+	    		message = "Worng Login or Password!";
+	    		FacesContext.getCurrentInstance().addMessage("msgs", new FacesMessage(message));  
+	    		return "changeLogin";
+	    	}
+	    	return  "index";
+	    }
 	    
 	    
 	    public void reset() {
@@ -251,6 +285,36 @@ public class LoginManagedBean implements Serializable{
 
 		public void setLoginId(Long loginId) {
 			this.loginId = loginId;
+		}
+
+
+		public String getOldPassword() {
+			return oldPassword;
+		}
+
+
+		public void setOldPassword(String oldPassword) {
+			this.oldPassword = oldPassword;
+		}
+
+
+		public String getNewPassword() {
+			return newPassword;
+		}
+
+
+		public void setNewPassword(String newPassword) {
+			this.newPassword = newPassword;
+		}
+
+
+		public String getRePassword() {
+			return rePassword;
+		}
+
+
+		public void setRePassword(String rePassword) {
+			this.rePassword = rePassword;
 		}
 
 	

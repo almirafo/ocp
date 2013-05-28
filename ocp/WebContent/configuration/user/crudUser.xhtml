@@ -22,6 +22,15 @@
     
     <f:view>
     <h:head>
+        <script>
+	        $(window).load(function () {
+	            $(document).delegate(".checkall", "click", function(event) {
+	                  $(this).closest("table").find(':checkbox').attr('checked', this.checked);
+	            });
+	        });
+        </script>
+        
+        
         
         <title>Users</title>
     </h:head>
@@ -78,7 +87,7 @@
             <p:panel header="Details"  rendered="true" style=" width: 60%; border: 0; font-style: italic; font-family:Arial; font-size: 12px;" >
                 <h:inputHidden  value="#{loginBean.loginId}" validatorMessage="#{loginBean.loginId}"/>
                  <h:inputHidden id="edita" value="#{loginBean.edita}"/>
-                <h:panelGrid  columns="2" style="border-style:groove;border-style-inner:none ;width: 800px">
+                <h:panelGrid  columns="2" style="border-style:groove;border-style-inner:none ">
                 
                     Name        :  <p:inputText     value="#{loginBean.userName}"    />
                     E-mail      :  <p:inputText     value="#{loginBean.email}" />
@@ -95,14 +104,14 @@
                                    </p:selectOneMenu>  
                 
                      
-					                 <h:panelGrid  columns="3">     
-						                <h:commandButton value="Save"  action ="#{loginBean.save}"/>
-						                <h:commandButton value="Reset" actionListener ="#{loginBean.reset}"/>
-							            <p:commandButton rendered="${loginBean.loginId > 0}" value="portals" onclick="dlgPortals.show();"  ajax="true"/>
-						                
-					                </h:panelGrid>
+					                 
             </h:panelGrid>   
-                   
+             <h:panelGrid  columns="3">     
+						                <p:commandButton value="Save"     action ="#{loginBean.save}"       ajax="false"    />
+						                <p:commandButton value="Reset"    actionListener ="#{loginBean.reset}"  ajax="false"/>
+							            <p:commandButton value="portals"  rendered="${loginBean.loginId > 0}"  onclick="dlgPortals.show();"  ajax="true"/>
+						                
+			</h:panelGrid>      
                
             </p:panel>
                 <p:messages severity="error" closable="true"/>
@@ -114,22 +123,25 @@
         </h:form>
              <h:form id="formPortals">   
             <p:dialog  id="dlgPortals1" widgetVar="dlgPortals" header="Portals do Associate" modal="true"  height="400" width="600" >
+
+ 							<h:dataTable id="selectedAccessRights" value="#{portalBean.setListAllByLogin( loginBean.loginId)}" var="item" border="1">
+							    <h:column>
+							     <f:facet name="header">
+							         <h:selectBooleanCheckbox class="checkall"/>
+							    </f:facet>
+							        <h:selectBooleanCheckbox id="checked" value="#{item.checked}" />
+							    </h:column>
+
+							    <h:column>
+							        <h:outputLabel value="#{item.portalName}" />
+							        <h:inputHidden id="items" value="#{item}"/>  
+							    </h:column>
+							    
+							</h:dataTable>
  							
- 							
- 							
- 							
+ 							<h:commandButton value="submit" action="#{portalBean.update()}" ajax="true"/>
  							               				
             				
-            				
-		       				 <p:selectManyCheckbox  id="accessRights" layout="pageDirection"  value="#{portalBean.selectedAccessRights}"  
-				                                  styleClass="checkBoxes"  style="margin-top: 10px;">  
-				                <f:selectItems  value="#{portalBean.listAllByLogin( loginBean.loginId)}"  var="portal" itemLabel="#{portal.portalName}"  itemValue = "#{portal.portalId} , #{loginBean.loginId}">
-				                	
-				                </f:selectItems>  
-				                <p:ajax process="@this"/> 
-				            </p:selectManyCheckbox>
-				            
-				            <p:commandButton value="Submit" actionListener="#{portalBean.update(accessRights)}" ajax="true"/>  
 				 <!--  -->        
 		        </p:dialog>  
          </h:form>

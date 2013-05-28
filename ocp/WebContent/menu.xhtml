@@ -37,10 +37,10 @@
                         <c:if test="${sessionScope.logado.getUserLevel() == 'A'}">
                         <p:submenu label="Configure" icon="ui-icon-note">  
                             <p:menuitem  value="Company" url="company.xhtml" />
-                            <p:menuitem  value="Portal" />
-                            <p:menuitem  value="User" url="user.xhtml"/>
-                            <p:menuitem  value="IVR"  url="ivr.xhtml"/>
-                            <p:menuitem  value="Site" url="site.xhtml"/>
+                            <p:menuitem  value="Portal"  url="portal.xhtml"/>
+                            <p:menuitem  value="User"    url="user.xhtml"/>
+                            <p:menuitem  value="IVR"     url="ivr.xhtml"/>
+                            <p:menuitem  value="Site"    url="site.xhtml"/>
                         </p:submenu>  
 					    </c:if>
                         <p:submenu label="Occupation" icon="icon-bookmark">  
@@ -49,7 +49,8 @@
                         </p:submenu>  
 
                        
-                        <p:menuitem  value="Logout" action="#{loginBean.logout}"/>    
+                        <p:menuitem  value="Change Login" action="changeLogin.xhtml"/> 
+                        <p:menuitem  value="Logout"        action="#{loginBean.logout}"/>    
                     </p:menubar>   
           
              <h:messages id="messages" style="visibility: hidden; height: 1px ;display: none" />  

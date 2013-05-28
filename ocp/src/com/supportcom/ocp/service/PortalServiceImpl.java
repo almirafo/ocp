@@ -42,24 +42,20 @@ public class PortalServiceImpl implements PortalService {
 	}
 
 	@Override
-	public List<Portal> setSelectedAccessRights(List<Portal> selectedAccessRights) {
-		Long loginId= 0l;
-		if (!selectedAccessRights.isEmpty()){
-			String[] reg =selectedAccessRights.get(0).getName().split(",");
-	    	loginId= Long.parseLong( reg[1].toString());
-	    	Long portalId= Long.parseLong( reg[0].toString());
-	    	portalDao.removeAllPortalsLogin(loginId);
-	    	for( Portal portal :selectedAccessRights){
-	    		
-	    		portalDao.associatePortalLogin(portalId, loginId);
+	public List<PortalLoginVO> setSelectedAccessRights(List<PortalLoginVO> selectedAccessRights) {
+		    Long loginId=selectedAccessRights.get(0).getLoginId();
+		    portalDao.removeAllPortalsLogin(loginId);
+		  	for( PortalLoginVO portal :selectedAccessRights){
+	    		portalDao.associatePortalLogin(portal.getPortalId(), portal.getLoginId());
 	    		
 	    	}
+		  	List<PortalLoginVO> retorno = listAllByLogin( loginId );
+	    	
+	    	return  retorno;
 		}
     	
-    	List<PortalLoginVO> retorno = listAllByLogin( loginId);
     	
-    	return  null;
-	}
+
 
 	public List<PortalLoginVO> listAllByLogin(Long loginId) {
 		

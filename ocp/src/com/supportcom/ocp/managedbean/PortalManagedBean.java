@@ -2,7 +2,9 @@ package com.supportcom.ocp.managedbean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -11,6 +13,7 @@ import javax.faces.event.ActionEvent;
 import com.supportcom.ocp.service.PortalServiceImpl;
 import com.supportcomm.ocp.entity.Portal;
 import com.supportcomm.ocp.entity.PortalLoginVO;
+import com.supportcomm.ocp.entity.Site;
 
 @ManagedBean(name="portalBean")
 @RequestScoped
@@ -24,27 +27,36 @@ public class PortalManagedBean  implements Serializable{
 	private String name;
 	private String description;
 	private String portalNumber;
-	private List<Portal> accessRights = new ArrayList<Portal>(); 
-	private List<Portal> selectedAccessRights = new ArrayList<Portal>(); 
-	private boolean Checkado=true;
+	private Site site =  new Site();
+	private List<PortalLoginVO> selectedAccessRights = new ArrayList<PortalLoginVO>(); 
 	
 	private Portal portal = new Portal();
 
+	
+    private Map<Long, Boolean> checked = new HashMap<Long, Boolean>();
+    private List<PortalLoginVO> items;
+	
+	
+	
+	
 	
 	public PortalManagedBean(){
 		 this.portalId = 0l;
 		 this.name ="";
 		 this.description="";
 		 this.portalNumber="";
+		 this.site = new Site();
 	}
-	public void reset(ActionEvent actionEvent ){
+	public void reset(){
 		 this.portalId = 0l;
 		 this.name ="";
 		 this.description="";
 		 this.portalNumber="";
+		 this.site =  new Site();
+		 
     }
 	
-    public void save(ActionEvent actionEvent ){
+    public String save(){
     	
     	PortalServiceImpl service = new PortalServiceImpl();
     	
@@ -52,7 +64,8 @@ public class PortalManagedBean  implements Serializable{
         portal.setName(this.name);
         portal.setDescription(this.description);
         portal.setPortalNumber(this.portalNumber);
-
+        portal.setSite(this.site);
+        portal.setDnid("qqq");
 
         if(this.portalId>0){
             portal.setPortalId(this.portalId);
@@ -60,6 +73,7 @@ public class PortalManagedBean  implements Serializable{
         } else{
         	service.save(portal); 
         }
+        return "portal";
     }
 	
 	
@@ -67,9 +81,11 @@ public class PortalManagedBean  implements Serializable{
     	PortalServiceImpl service = new PortalServiceImpl();
         this.portal = service.findById(portal);
         
-        name= portal.getName();
-        portalId = portal.getPortalId();
-        description = portal.getDescription();
+        this.name= portal.getName();
+        this.portalId = portal.getPortalId();
+        this.description = portal.getDescription();
+        this.site = portal.getSite();
+        this.portalNumber = portal.getPortalNumber();
         return("portal");
 
     }
@@ -90,38 +106,35 @@ public class PortalManagedBean  implements Serializable{
     }
     
     
-    public List<PortalLoginVO> listAllByLogin(Long loginId){
+    private List<PortalLoginVO> listAllByLogin;
+    public  List<PortalLoginVO>  setListAllByLogin(Long loginId){
     	PortalServiceImpl service = new PortalServiceImpl();
-    	List<PortalLoginVO> p = service.listAllByLogin(loginId);
-    	
-    	return p;
+    	listAllByLogin = service.listAllByLogin(loginId);
+    	return listAllByLogin;
+
     }
+    
+    
+    public List<PortalLoginVO> getListAllByLogin(){
+    	
+    	return listAllByLogin;
+    }
+    
     
     
     
     //-----------------------------------------------------------
-    public void setAccessRights(List<Portal> accessRights) {
-    	for( Portal portal :accessRights){
-    		System.out.println("Portal : " + portal.getName());
-    	}
-        this.accessRights = accessRights;  
-    }
-    
-    public List<Portal> getAccessRights() {  
-    	PortalServiceImpl service = new PortalServiceImpl();
-      	
-    	return service.listAll();
-    }  
+ 
 
     
     
     
-    public List<Portal> getSelectedAccessRights() {  
+    public List<PortalLoginVO> getSelectedAccessRights() {  
   
         return selectedAccessRights;  
     }  
   
-    public void setSelectedAccessRights(List<Portal> selectedAccessRights) {  
+    public void setSelectedAccessRights(List<PortalLoginVO> selectedAccessRights) {  
     	
     	PortalServiceImpl portalService = new PortalServiceImpl();
     	
@@ -130,12 +143,25 @@ public class PortalManagedBean  implements Serializable{
     	this.selectedAccessRights = selectedAccessRights;  
     }  
     
-    public String update(List<Portal> selectedAccessRights){
+    public String update(){
+
+        List<PortalLoginVO> checkedItems = new ArrayList<PortalLoginVO>();
+
+        for (PortalLoginVO item : this.listAllByLogin) {
+            if (item.getChecked() ) {
+                checkedItems.add(item);
+            }
+        }
+
+     
     	PortalServiceImpl portalService = new PortalServiceImpl();
     	
-    	portalService.setSelectedAccessRights(selectedAccessRights);
+    	portalService.setSelectedAccessRights(checkedItems);
     	 return("portal");
     }
+    
+    
+    
     
 	//---------------------------------
 	public Long getPortalId() {
@@ -168,16 +194,27 @@ public class PortalManagedBean  implements Serializable{
 	public void setPortal(Portal portal) {
 		this.portal = portal;
 	}
-	public boolean isCheckado() {
-		return Checkado;
+
+	public Map<Long, Boolean> getChecked() {
+		return checked;
 	}
-	public void setCheckado(boolean checkado) {
-		Checkado = checkado;
+	public void setChecked(Map<Long, Boolean> checked) {
+		this.checked = checked;
+	}
+	public List<PortalLoginVO> getItems() {
+		return items;
+	}
+	public void setItems(List<PortalLoginVO> items) {
+		this.items = items;
+	}
+	public Site getSite() {
+		return site;
+	}
+	public void setSite(Site site) {
+		this.site = site;
 	}
 
 	
-
-
 	
 	
 	

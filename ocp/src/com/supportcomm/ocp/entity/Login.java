@@ -17,6 +17,20 @@ import java.util.List;
 	
 }
 )
+
+
+
+
+@NamedNativeQueries({
+	@NamedNativeQuery(name="loginInsert", query ="INSERT INTO login( " +
+                                                 " company_id, username, email, password, description," + 
+                                                 " user_level) " +
+                                                 " VALUES (:companyId, :username, :email, :password, :description," + 
+                                                 ":userLevel)" )
+
+})
+
+
 public class Login implements Serializable {
 	private static final long serialVersionUID = 1L;
 

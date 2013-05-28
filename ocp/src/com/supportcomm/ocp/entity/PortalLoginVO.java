@@ -11,6 +11,9 @@ public class PortalLoginVO  {
 	Long loginId;
 	String portalName;
 	
+	Boolean checked;
+	
+	
 	public Long getPortalId() {
 		return portalId;
 	}
@@ -28,6 +31,12 @@ public class PortalLoginVO  {
 	}
 	public void setPortalName(String portalName) {
 		this.portalName = portalName;
+	}
+	public Boolean getChecked() {
+		return checked;
+	}
+	public void setChecked(Boolean checked) {
+		this.checked = checked;
 	}
 	
 	

@@ -33,9 +33,11 @@ public class PortalDAOImpl implements PortalDAO {
 		
 		try{
 			em.getTransaction().begin();
+			portal = em.find(Portal.class, portal.getPortalId());
 			em.remove(portal);
 			em.getTransaction().commit();
 		}catch(Exception e){
+			System.out.println(e.getMessage());
 			em.getTransaction().rollback();
 			
 		}finally{
@@ -51,7 +53,7 @@ public class PortalDAOImpl implements PortalDAO {
 		Portal results = new Portal();
 		try{
 			em.getTransaction().begin();
-			results =em.find(Portal.class, portal);
+			results =em.find(Portal.class, portal.getPortalId());
 			em.getTransaction().commit();
 		}catch(Exception e){
 			em.getTransaction().rollback();
@@ -164,12 +166,12 @@ public class PortalDAOImpl implements PortalDAO {
 
         EntityManager em = JPAUtil.getEntityManager();
         String query="SELECT " +
-        		 "P.login_id  as loginId,"+
-				 "  P.portal_id as portalId, "+
-				 "  portal.name            as portalName "+
+        		"    case when P.login_id is null then :loginId else P.login_id end   as loginId ," +
+        		"	 portal.portal_id as portalId," +
+        		"	 case when  P.portal_id is null then false else true end as checked ," +
+        		"	 portal.name            as portalName " +
 
-				 "FROM portal LEFT JOIN  (SELECT * FROM portal_login WHERE portal_login.login_id = :loginId)  AS P ON (portal.portal_id = P.portal_id)";
-
+        		"	FROM portal LEFT JOIN  (SELECT * FROM portal_login WHERE portal_login.login_id = :loginId)  AS P ON (portal.portal_id = P.portal_id)" ;
 
         
         

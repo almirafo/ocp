@@ -15,6 +15,7 @@ import com.supportcomm.ocp.util.JPAUtil;
 public class LoginDaoImpl   implements LoginDao {
 	
 	public void save(Login login) {
+		/*
         EntityManager em = JPAUtil.getEntityManager();
         Login l =  new Login();
         
@@ -31,7 +32,35 @@ public class LoginDaoImpl   implements LoginDao {
            
        tx.commit();
        em.close();
-       }
+       }*/
+		
+
+		EntityManager em=  JPAUtil.getEntityManager();
+		 String query ="INSERT INTO login( " +
+                 " company_id, username, email, password, description," + 
+                 " user_level) " +
+                 " VALUES (:companyId, :username, :email, :password, :description," + 
+                 ":userLevel)";
+			try{
+				em.getTransaction().begin();
+				em.createNativeQuery(query)
+				
+				.setParameter("companyId", login.getCompany().getCompanyId())
+				.setParameter("username", login.getUsername())
+				.setParameter("email", login.getEmail())
+				.setParameter("password", "change123")
+				.setParameter("description", login.getDescription())
+				.setParameter("userLevel", login.getUserLevel())
+				
+				.executeUpdate();
+				em.getTransaction().commit();
+			}catch(Exception e){
+				em.getTransaction().rollback();
+				
+			}finally{
+				em.close();
+			}
+		
 	}
 
 	public void delete(Login login) {
